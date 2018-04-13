@@ -1,4 +1,5 @@
 require(`${__dirname}/config.js`);
+require('./packet.js');
 const client = require('./client.js');
 const fs = require('fs');
 const net = require('net');
@@ -15,22 +16,20 @@ let loadResources = (dir, callback=undefined) => {
   }
 }
 
-let maps = {};
+const maps = {};
 
 loadResources("initializers");
 loadResources("models");
 loadResources(dir=config.data_paths.maps, (mapFile) => {
   console.log(`Loading map: ${dir}${mapFile}`);
-  var map = require(__dirname + dir + mapFile);
+  const map = require(__dirname + dir + mapFile);
   maps[map.room] = map;
 });
 
 net.createServer((socket) => {
 
-  let thisClient = new client.Client();
+  const thisClient = new client.Client(socket);
   thisClient.initiate();
-
-  thisClient.socket = socket;
 
   socket.on('error', (err) => {
     thisClient.err(err);

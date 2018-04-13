@@ -1,0 +1,6 @@
+{
+    "editor.tabSize": 2,
+    "editor.rulers": [99],
+    "files.eol": "\n",
+    "terminal.integrated.shellArgs.windows": ["C:\\Windows\\System32\\cmd.exe"]
+}

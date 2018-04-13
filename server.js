@@ -1,6 +1,7 @@
 require(`${__dirname}/config.js`);
-let fs = require('fs');
-let net = require('net');
+const client = require('./client.js');
+const fs = require('fs');
+const net = require('net');
 
 let loadResources = (dir, callback=undefined) => {
   let files = fs.readdirSync(`${__dirname}/${dir}`);
@@ -25,18 +26,22 @@ loadResources(dir=config.data_paths.maps, (mapFile) => {
 });
 
 net.createServer((socket) => {
+
+  let thisClient = new client.Client();
+  thisClient.initiate();
+
+  thisClient.socket = socket;
+
   socket.on('error', (err) => {
-    console.log(`Socker error: ${err}`);
-    socket.end();
+    thisClient.err(err);
   });
-
   socket.on('end', () => {
-    console.log("Socket closed.");
+    thisClient.end();
+  });
+  socket.on('data', (data) => {
+    thisClient.data(data);
   });
 
-  socket.on('data', (data) => {
-    console.log(`Received: ${data.toString()}`)
-  });
 }).listen(config.port);
 
 console.log(`Config is ${config.environment}`);

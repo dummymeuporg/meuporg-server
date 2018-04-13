@@ -25,6 +25,18 @@ loadResources(dir=config.data_paths.maps, (mapFile) => {
 });
 
 net.createServer((socket) => {
+  socket.on('error', (err) => {
+    console.log("Client connected.");
+  });
+
+  socket.on('end', () => {
+    console.log("Socket closed");
+  });
+
+  socket.on('data', (data) => {
+    console.log(`Received: ${data.toString()}`)
+  });
 }).listen(config.port);
 
+console.log(`Config is ${config.environment}`);
 console.log(`Initialize completed. Server running on port ${config.port}`);

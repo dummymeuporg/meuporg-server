@@ -26,11 +26,12 @@ loadResources(dir=config.data_paths.maps, (mapFile) => {
 
 net.createServer((socket) => {
   socket.on('error', (err) => {
-    console.log("Client connected.");
+    console.log(`Socker error: ${err}`);
+    socket.end();
   });
 
   socket.on('end', () => {
-    console.log("Socket closed");
+    console.log("Socket closed.");
   });
 
   socket.on('data', (data) => {

@@ -9,7 +9,7 @@ class Client {
 
   initiate() {
     // Send the connection handshake packet to the client.
-    this.socket.write(packet.build(["HELLO", now.toString()]));
+    this.socket.write(packet.build(["HELLO", now().toString()]));
     console.log("Initiated client.");
   }
 
@@ -19,6 +19,7 @@ class Client {
 
   err(err) {
     console.log(`Client error: ${err}`);
+    this.socket.end();
   }
 
   end() {
